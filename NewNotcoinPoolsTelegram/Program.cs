@@ -89,6 +89,7 @@ class Program
         WebAppData          = webAppData;
         _dbModel.WebAppData = webAppData;
         SaveDatabase();
+        _lastMessageToMaximTimestamp = new DateTime(2024, 1, 1);
     }
 
     private static async Task DoReLoginAsync()
@@ -134,18 +135,18 @@ class Program
             {
                 Log.Error("JsonAnswer is null! Trying to get new auth.");
 
-                DoReLoginAsync();
+                await DoReLoginAsync();
 
                 return;
             }
 
             Log.Information($"CheckForUpdates Server Answer: {json_answer}");
 
-            if (json_answer.Contains("UnauthorizedException"))
+            if (json_answer.Contains("InvalidAuthorizationException"))
             {
                 Log.Warning("Detected expired auth. Doing relogin now.");
 
-                DoReLoginAsync();
+                await DoReLoginAsync();
 
                 return;
             }
@@ -166,10 +167,11 @@ class Program
                 if (existingPool == null)
                 {
                     _dbModel.Pools.Add(newPool);
-                    await SendMessageToTelegram("<b>New " + (newPool.isActive ? "" : "NOT ") + $"active pool added:</b> {newPool.name}\n\n" + 
+                    await SendMessageToTelegram("<b>New " + (newPool.isActive ? "ACTIVE" : "upcoming") + $" pool added:</b> {newPool.name}\n\n" + 
                                                 $"{newPool.MarkdownV2()}\n\n" +
-                                                $"<b>Easy enter to Notcoin Bot</b> 👉 @notcoin_bot\n\n" +
-                                                $"Stay with us! {_telegramChatId}");
+                                                (newPool.isActive ? $"<b>Easy enter to Notcoin Bot</b> 👉 @notcoin_bot\n\n" : "") +
+                                                $"Stay with us and turn on notifications! {_telegramChatId}",
+                                                isSilent: !newPool.isActive);
                     hasChanges = true;
                 }
                 else if (existingPool.isActive != newPool.isActive)
@@ -180,11 +182,11 @@ class Program
                         await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>now active ✅</b>\n\n" +
                                                     $"{newPool.MarkdownV2()}\n\n" +
                                                     $"<b>Easy enter to Notcoin Bot</b> 👉 @notcoin_bot\n\n" +
-                                                    $"Stay with us! {_telegramChatId}");
+                                                    $"Stay with us and turn on notifications! {_telegramChatId}");
                     }
                     else
                     {
-                        await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>no longer active ❌</b> \n\nStay with us and earn $NOT! {_telegramChatId}");
+                        await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>no longer active ❌</b> \n\nStay with us and earn $NOT | {_telegramChatId}");
                     }
                     hasChanges = true;
                 }
@@ -226,14 +228,15 @@ class Program
         return "Bearer " + match.Groups[1].Value;
     }
 
-    private static async Task SendMessageToTelegram(string message)
+    private static async Task SendMessageToTelegram(string message, bool isSilent = false)
     {
         var url = $"https://api.telegram.org/bot{_telegramBotToken}/sendMessage";
         var content = new StringContent(JsonConvert.SerializeObject(new
         {
-            chat_id    = _telegramChatId,
-            text       = message,
-            parse_mode = "HTML"
+            chat_id              = _telegramChatId,
+            text                 = message,
+            parse_mode           = "HTML",
+            disable_notification = isSilent
         }), System.Text.Encoding.UTF8, "application/json");
 
         /*WebProxy webProxy = new WebProxy(_proxy);
