@@ -70,7 +70,8 @@ namespace NewNotcoinPoolsTelegram
                     }
                     else
                     {
-                        await botClient.SendTextMessageAsync(message.Chat, $"Usage: /authwebappdata <webAppData>", parseMode: ParseMode.Html);
+                        await botClient.SendTextMessageAsync(message.Chat, $"Usage: /authwebappdata <webAppData>\n" +
+                                                                           $"Or: /authwebappdata <queryTGAuthString>");
                     }
                     break;
                 case "/restartapp":

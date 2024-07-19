@@ -210,8 +210,11 @@ class Program
             { "Authorization", "Bearer " + _refreshToken }
         };
 
+        string paramsString = $"{{\"webAppData\":\"{WebAppData}\"}}";
+
         string? json_answer = HTTPController.ExecuteFunctionUntilSuccess(() =>
-                                     HTTPController.SendRequest(_webappSessionUrl, RequestType.POST, _proxy, headers, null, WebAppData, 
+                                     HTTPController.SendRequest(_webappSessionUrl, RequestType.POST, _proxy, headers, null, 
+                                     WebAppData.Contains("\"webAppData\"") ? WebAppData : paramsString,
                                      "application/json", _refererHeader)
                                  );
 
