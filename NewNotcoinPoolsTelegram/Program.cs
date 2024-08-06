@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Serilog;
 using System.Text.RegularExpressions;
-using Telegram.Bot;
 
 class Program
 {
@@ -170,7 +169,8 @@ class Program
                     await SendMessageToTelegram("<b>New " + (newPool.isActive ? "ACTIVE" : "upcoming") + $" pool added:</b> {newPool.name}\n\n" + 
                                                 $"{newPool.MarkdownV2()}\n\n" +
                                                 (newPool.isActive ? $"<b>Easy enter to Notcoin Bot</b> 👉 @notcoin_bot\n\n" : "") +
-                                                $"Stay with us and turn on notifications! {_telegramChatId}",
+                                                $"Stay with us and turn on notifications! {_telegramChatId}\n\n" +
+                                                $"🌟 Check out our new project 👉 <b>@AutoBlumFarm</b> 🌟",
                                                 isSilent: !newPool.isActive);
                     hasChanges = true;
                 }
@@ -182,11 +182,14 @@ class Program
                         await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>now active ✅</b>\n\n" +
                                                     $"{newPool.MarkdownV2()}\n\n" +
                                                     $"<b>Easy enter to Notcoin Bot</b> 👉 @notcoin_bot\n\n" +
-                                                    $"Stay with us and turn on notifications! {_telegramChatId}");
+                                                    $"Stay with us and turn on notifications! {_telegramChatId}\n\n" +
+                                                    $"🌟 Check out our new project 👉 <b>@AutoBlumFarm</b> 🌟");
                     }
                     else
                     {
-                        await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>no longer active ❌</b> \n\nStay with us and earn $NOT | {_telegramChatId}");
+                        await SendMessageToTelegram($"Pool <b>{newPool.name}</b> is <b>no longer active ❌</b> \n\n" +
+                                                    $"Stay with us and earn $NOT | {_telegramChatId}\n\n" +
+                                                    $"🌟 Check out our new project 👉 <b>@AutoBlumFarm</b> 🌟");
                     }
                     hasChanges = true;
                 }
