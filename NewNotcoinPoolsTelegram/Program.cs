@@ -9,8 +9,8 @@ class Program
 
     private const string _telegramBotToken    = "7248246786:AAGNZk94aNHjdGbfSpG3VQKp6kVTFVVnIPo";
     private const string _telegramChatId      = "@NewNotcoinPools";
-    private const string _dataUrl             = "https://clicker-api.joincommunity.xyz/pool/my",
-                                   _webappSessionUrl    = "https://clicker-api.joincommunity.xyz/auth/webapp-session";
+    private const string _dataUrl             = "https://clicker-api.joincommunity.xyz/pool/available",
+                         _webappSessionUrl    = "https://clicker-api.joincommunity.xyz/auth/webapp-session";
     private const string _originHeader        = "https://farm.joincommunity.xyz",
                          _refererHeader       = _originHeader;
     private const string _proxy               = "";
@@ -153,7 +153,7 @@ class Program
             var parsed   = JsonConvert.DeserializeObject<WebParseModel>(json_answer);
             if (parsed == null) return;
 
-            var newPools = parsed.data;
+            var newPools = parsed.data.pools;
             if (newPools == null) return;
 
             bool hasChanges = false;

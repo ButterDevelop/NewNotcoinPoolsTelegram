@@ -6,10 +6,28 @@
         public List<Pool> Pools { get; set; } = new List<Pool>();
     }
 
+    public class Calc
+    {
+        public string total { get; set; } = string.Empty;
+        public string reserved { get; set; } = string.Empty;
+        public string paid { get; set; } = string.Empty;
+        public string available { get; set; } = string.Empty;
+    }
+
+    public class Data
+    {
+        public List<Pool> pools { get; set; } = [];
+    }
+
+    public class Identity
+    {
+        public Calc calc { get; set; } = new();
+    }
+
     public class WebParseModel
     {
         public bool ok { get; set; }
-        public List<Pool> data { get; set; } = new List<Pool>();
+        public Data data { get; set; } = new();
     }
 
     public class Pool
@@ -18,16 +36,18 @@
         public string name { get; set; } = string.Empty;
         public string description { get; set; } = string.Empty;
         public string image { get; set; } = string.Empty;
-        public object reward { get; set; } = new object();
+        public string? reward { get; set; } = string.Empty;
         public int mined { get; set; }
+        public int claimed { get; set; }
         public int challengeId { get; set; }
         public bool isJoined { get; set; }
         public bool isRisky { get; set; }
         public bool isActive { get; set; }
+        public Identity identity { get; set; } = new();
 
         public string MarkdownV2()
         {
-            string rewardString = reward.ToString() ?? "0";
+            string rewardString = reward ?? "0";
 
             double rewardDouble = double.Parse(rewardString);
 
