@@ -124,7 +124,7 @@ namespace NewNotcoinPoolsTelegram
         {
             try
             {
-                using (HttpRequest request = new HttpRequest())
+                using (HttpRequest request = new())
                 {
                     request.SslCertificateValidatorCallback += ServerCertificateValidationCallback;
                     request.IgnoreProtocolErrors            = true;

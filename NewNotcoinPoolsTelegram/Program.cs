@@ -7,7 +7,7 @@ class Program
 {
     private static Timer? _timer = null;
 
-    private const string _telegramBotToken    = "7248246786:AAGNZk94aNHjdGbfSpG3VQKp6kVTFVVnIPo";
+    private const string _telegramBotToken    = "7248246786:AAGNZk94aNHjdGbfSpG3VQKp6kVTFVVnIPo"; // REVOKED, don't worry
     private const string _telegramChatId      = "@NewNotcoinPools";
     private const string _dataUrl             = "https://clicker-api.joincommunity.xyz/pool/available",
                          _webappSessionUrl    = "https://clicker-api.joincommunity.xyz/auth/webapp-session";
@@ -22,7 +22,7 @@ class Program
         return LOG_FILE_PATH.Replace(MASK_DATE_LOG_FILE_PATH, DateTime.Now.ToString("yyyyMMddHH"));
     }
 
-    private static DBModel _dbModel = new DBModel();
+    private static DBModel _dbModel = new();
     private static readonly string _dbFilePath = "db.json";
 
     private static string _authorizationHeader = "";
@@ -30,7 +30,7 @@ class Program
 
     private readonly static TelegramBot adminTelegramBot = new(_telegramBotToken);
 
-    public static string WebAppData = "{\"webAppData\":\"query_id=AAHY8gsXAAAAANjyCxc1WP2F&user=%7B%22id%22%3A386659032%2C%22first_name%22%3A%22%D0%9C%D0%B0%D0%BA%D1%81%D0%B8%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22max_kt%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1720984346&hash=359d0b4d5704fe061764f4c6c31592633bfc64fd98ed24e99ba48650b8d2b2c9\"}";
+    public static string WebAppData = "";
 
     private static DateTime _lastMessageToMaximTimestamp = new(2024, 1, 1);
 
@@ -224,7 +224,7 @@ class Program
         Log.Information($"Getting the auth info: {json_answer}");
         if (json_answer == null) return null;
 
-        Regex regex = new Regex(",\"accessToken\":\"(.*)\",\"refreshToken\":\"(.*)\"");
+        Regex regex = new(",\"accessToken\":\"(.*)\",\"refreshToken\":\"(.*)\"");
         var match = regex.Match(json_answer);
 
         if (!match.Success) return null;
@@ -244,12 +244,6 @@ class Program
             parse_mode           = "HTML",
             disable_notification = isSilent
         }), System.Text.Encoding.UTF8, "application/json");
-
-        /*WebProxy webProxy = new WebProxy(_proxy);
-        HttpClientHandler httpClientHandler = new HttpClientHandler
-        {
-            Proxy = webProxy
-        };*/
 
         HttpClient httpClient = new();
         var response = await httpClient.PostAsync(url, content);

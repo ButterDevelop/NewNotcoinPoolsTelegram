@@ -10,7 +10,7 @@ namespace NewNotcoinPoolsTelegram
     {
         private readonly ITelegramBotClient botClient;
         private readonly long[] adminIds = [386659032, 785861432, 1388367582];
-        private const long maximTGIdIndex = 0;
+        private const long mainAdminTGIdIndex = 0;
 
         public TelegramBot(string token)
         {
@@ -28,7 +28,7 @@ namespace NewNotcoinPoolsTelegram
 
         public async Task SendMessageToMaxim(string message)
         {
-            await botClient.SendTextMessageAsync(adminIds[maximTGIdIndex], message, parseMode: ParseMode.Html);
+            await botClient.SendTextMessageAsync(adminIds[mainAdminTGIdIndex], message, parseMode: ParseMode.Html);
         }
 
         private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)

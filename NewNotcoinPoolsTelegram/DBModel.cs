@@ -2,15 +2,15 @@
 {
     public class DBModel
     {
-        public string WebAppData { get; set; } = string.Empty;
-        public List<Pool> Pools { get; set; } = new List<Pool>();
+        public string     WebAppData { get; set; } = string.Empty;
+        public List<Pool> Pools      { get; set; } = [];
     }
 
     public class Calc
     {
-        public string total { get; set; } = string.Empty;
-        public string reserved { get; set; } = string.Empty;
-        public string paid { get; set; } = string.Empty;
+        public string total     { get; set; } = string.Empty;
+        public string reserved  { get; set; } = string.Empty;
+        public string paid      { get; set; } = string.Empty;
         public string available { get; set; } = string.Empty;
     }
 
@@ -32,18 +32,18 @@
 
     public class Pool
     {
-        public int id { get; set; }
-        public string name { get; set; } = string.Empty;
-        public string description { get; set; } = string.Empty;
-        public string image { get; set; } = string.Empty;
-        public string? reward { get; set; } = string.Empty;
-        public int mined { get; set; }
-        public int claimed { get; set; }
-        public int challengeId { get; set; }
-        public bool isJoined { get; set; }
-        public bool isRisky { get; set; }
-        public bool isActive { get; set; }
-        public Identity identity { get; set; } = new();
+        public int      id          { get; set; }
+        public string   name        { get; set; } = string.Empty;
+        public string   description { get; set; } = string.Empty;
+        public string   image       { get; set; } = string.Empty;
+        public string?  reward      { get; set; } = string.Empty;
+        public int      mined       { get; set; }
+        public int      claimed     { get; set; }
+        public int      challengeId { get; set; }
+        public bool     isJoined    { get; set; }
+        public bool     isRisky     { get; set; }
+        public bool     isActive    { get; set; }
+        public Identity identity    { get; set; } = new();
 
         public string MarkdownV2()
         {
